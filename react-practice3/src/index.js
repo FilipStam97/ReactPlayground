@@ -1,4 +1,5 @@
 import React from 'react';
+import { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -76,10 +77,76 @@ function Mailbox(props) {
 
 const messages = ['React', 'Re: React', 'Re:Re: React'];
 
+class Form extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event){
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit = (event)=> {
+    alert("A name was changed to" + this.state.value);
+    event.preventDefault();
+  } 
+
+  render() {
+    return(
+      <form onSubmit={this.handleSubmit}>
+      <label>
+        Name:
+        <input type="text" value={this.state.value} onChange={this.handleChange} />
+      </label>
+      <input type="submit" value="Submit" />
+    </form>
+    );
+  }
+
+  
+}
+
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return <p>The water would boil.</p>;
+  }
+  return <p>The water would not boil.</p>;
+}
+
+class Calculator extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {temperature: ''};
+  }
+
+  handleChange(e) {
+    this.setState({temperature: e.target.value});
+  }
+
+  render() {
+    const temperature = this.state.temperature;
+    return (
+      <fieldset>
+        <legend>Enter temperature in Celsius:</legend>
+        <input
+          value={temperature}
+          onChange={this.handleChange} />
+        <BoilingVerdict
+          celsius={parseFloat(temperature)} />
+      </fieldset>
+    );
+  }
+}
+
 ReactDOM.render(
   <div>
  <LoginControl/>
   <Mailbox unreadMessages={messages}/>
+  <Form/>
+  <Calculator/>
   </div>,
   document.getElementById('root')
 );
